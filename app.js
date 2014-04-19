@@ -7,6 +7,7 @@ var app      = express();
 
 global.express = express;
 global._ = require('lodash');
+global.Q = require('q');
 global.config = require('nconf').argv().env().file({ file: 'config.json' });
 global.APP_PATH = __dirname;
 global.app = app;
