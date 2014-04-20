@@ -23,13 +23,16 @@ gulp.task('watch', function() {
   gulp.watch('./public/styles/*.less', ['less']);
 });
 
-// gulp.task('forever', function () {
-//   forever.stop('./app.js');
-//   forever.start('./app.js');
-// });
+gulp.task('forever', function () {
+  var child = new (forever.Monitor)('./app.js', {
+    max: 3,
+    silent: true,
+    options: [],
+    watch: true,
+    watchDirectory: './'
+  });
 
-// gulp.task('server', function () {
-//   gulp.watch('./**/**/**/*.js', 'forever')
-// });
+  child.start();
+});
 
-gulp.task('default', ['browserify', 'less', 'watch']);
+gulp.task('default', ['browserify', 'less', 'watch', 'forever']);
