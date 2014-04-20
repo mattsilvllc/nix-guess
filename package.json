@@ -16,6 +16,11 @@
     "q": "^1.0.1"
   },
   "devDependencies": {
-    "gulp": "^3.6.1"
+    "gulp": "^3.6.1",
+    "vinyl-source-stream": "^0.1.1",
+    "browserify": "^3.44.1",
+    "jquery": "^2.1.0",
+    "gulp-less": "^1.2.3",
+    "forever-monitor": "^1.2.3"
   }
 }
