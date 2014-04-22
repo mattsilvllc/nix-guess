@@ -1,25 +1,31 @@
 var path = require('path');
 var gulp = require('gulp');
-var browserify = require('browserify');
+var concat = require('gulp-concat');
 var less = require('gulp-less');
 var forever = require('forever-monitor');
 var source = require('vinyl-source-stream');
  
-gulp.task('browserify', function() {
-  return browserify('./public/scripts/app.js')
-    .bundle()
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./public/dist/'));
+gulp.task('scripts', function() {
+  var files = [
+    './public/scripts/vendors/jquery.min.js',
+    './public/scripts/vendors/bootstrap.min.js',
+    './public/scripts/vendors/responsive-nav.js',
+    './public/scripts/app.js'
+  ];
+
+  gulp.src(files)
+    .pipe(concat('bundle.js'))
+    .pipe(gulp.dest('./public/dist/'))
 });
 
 gulp.task('less', function() {
   gulp.src('./public/styles/bundle.less')
-    .pipe(less({ compress: true }))
+    .pipe(less({ compress: true, yuicompress: true, optimization: 2}))
     .pipe(gulp.dest('./public/dist'));
 });
 
 gulp.task('watch', function() {
-  gulp.watch('./public/scripts/*.js', ['browserify']);
+  gulp.watch('./public/scripts/*.js', ['scripts']);
   gulp.watch('./public/styles/*.less', ['less']);
 });
 
@@ -35,4 +41,4 @@ gulp.task('forever', function () {
   child.start();
 });
 
-gulp.task('default', ['browserify', 'less', 'watch', 'forever']);
+gulp.task('default', ['scripts', 'less', 'watch', 'forever']);

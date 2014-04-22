@@ -1,0 +1,42 @@
+extends layout
+
+block content
+  nav.nav-collapse
+    ul
+      li
+        a(href='/') Home
+      li
+        a(href='/results') Results
+      li
+        a(href='#') Account
+  .nav-bar
+  .header.clearfix
+    a#toggle.nav-toggle(href='#')
+      span.toggle-bar
+      span.toggle-bar
+      span.toggle-bar
+    h1.title Guess Calories
+  .container
+    .row
+      .col-xs-12.col-md-offset-3.col-md-6
+        .item-photo.align-center
+          img.img-responsive(src='https://nutritionix-res.cloudinary.com/image/upload/v1389895251/52d81e57d33617976a3a9663.jpg', alt='Mangoes', title='Mangoes')
+        h3.item-name
+          | Lucky Charms Cereal
+        h5.brand-name
+          | GENERAL MILLS
+        p.question
+          span Q:
+          | How many calories in
+          b 1 cup
+          | ?
+          p
+            form#form-q.form-horizontal(action='alert.html', role='form')
+              .form-group
+                .col-xs-5.col-sm-3.col-md-3
+                  input#ans.form-control.input-lg(type='tel', placeholder='')
+                button#btn-go.btn.btn-lg.btn-primary(type='submit') Go
+            .current-score
+              a.view-results-link(href='/results') [ View results ]
+              | Correctly Guessed:
+              h4.overall-score 15 of 35

@@ -1,4 +1,29 @@
 extends layout
 
 block content
-  h3 nix guess
+  nav.nav-collapse
+    ul
+      li
+        a(href='/') Home
+      li
+        a(href='/results') Results
+      li
+        a(href='#') Account
+  .nav-bar
+  .header.clearfix
+    a#toggle.nav-toggle(href='#')
+      span.toggle-bar
+      span.toggle-bar
+      span.toggle-bar
+    h1.title Guess Calories
+  .logo
+    img(src='images/logo.png', alt='Nutritionix', title='Nutritionix')
+  .container
+    .row
+      .col-xs-offset-1.col-xs-10.align-center
+        p
+          | Train yourself to better understand calories in food portions.
+          | Login with Facebook to get started!
+        .login-button
+          a(href='/guess')
+            img(src='images/fblogin.png')

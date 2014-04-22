@@ -1,0 +1,115 @@
+.nav-collapse,
+.nav-collapse * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.nav-collapse,
+.nav-collapse ul {
+  list-style: none;
+  width: 100%;
+  float: left;
+}
+
+.nav-collapse li {
+  float: left;
+  width: 100%;
+  font-size: 16px;
+}
+.nav-collapse li a {
+  display: block;
+  color: #fff;
+  padding: 11px 15px;
+  text-decoration: none;
+  font-weight: bold;
+  background-color:#6CB419 ;
+}
+.nav-collapse li a:hover,
+.nav-collapse li a:active {
+  background-color: #80C82D;
+}
+
+@media screen and (min-width: 40em) {
+  .nav-collapse li {
+    width: 33.3333%;
+    *width: 24.9%; /* IE7 Hack */
+    _width: 19%; /* IE6 Hack */
+  }
+}
+
+.nav-collapse a {
+  color: #fff;
+  text-decoration: none;
+  width: 100%;
+  background: #f4421a;
+  border-bottom: 1px solid white;
+  padding: 0.7em 1em;
+  float: left;
+}
+
+@media screen and (min-width: 40em) {
+  .nav-collapse a {
+    margin: 0;
+    /*padding: 1em;*/
+    float: left;
+    text-align: center;
+    border-bottom: 0;
+    border-right: 1px solid white;
+  }
+  .nav-collapse li:last-child a {    
+    border-right: none;
+  }  
+}
+
+.nav-collapse ul ul a {
+  background: #ca3716;
+  padding-left: 2em;
+}
+
+@media screen and (min-width: 40em) {  
+  .nav-collapse ul ul a {
+    display: none;
+  }
+}
+.nav-bar {
+  background: #6CB419;
+  /*position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  right: 0;*/
+
+  height: .5em;
+  width: 100%;
+}
+
+
+.nav-toggle {
+  position: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-decoration: none;
+  text-indent: -999px;
+  position: relative;
+  overflow: hidden;
+  padding-top: 21px;
+  padding-bottom: 10px;
+  width: 70px;
+  height: 60px;
+  float: right; 
+}
+
+.toggle-bar {
+  height: 4px;
+  width: 25px;
+  margin: 0 auto;
+  background: #6CB419;
+  display: block;
+  margin-bottom: 3px;
+}
