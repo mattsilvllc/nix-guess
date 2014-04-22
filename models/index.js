@@ -2,13 +2,6 @@ var fs     = require('fs');
 var mysql  = require('mysql');
 var Models = {};
 
-global.ITEMS_DB = mysql.createConnection({
-  host     : config.get('DB_HOST'),
-  user     : config.get('DB_USER'),
-  password : config.get('DB_PASS'),
-  database : config.get('DB_ITEMS_NAME')
-});
-
 global.DB = mysql.createConnection({
   host     : config.get('DB_HOST'),
   user     : config.get('DB_USER'),
@@ -16,8 +9,7 @@ global.DB = mysql.createConnection({
   database : config.get('DB_NAME')
 });
 
-global.DB.connect();
-global.ITEMS_DB.connect();
+DB.connect();
 
 fs.readdirSync(__dirname)
   .filter(function (name) {

@@ -6,6 +6,5 @@
   "DB_HOST": "nixrds0.cmicmvbb12ho.us-east-1.rds.amazonaws.com",
   "DB_USER": "davit",
   "DB_PASS": "ZR~}@3&^}B;u)q2gwfxvq5B#1",
-  "DB_ITEMS_NAME": "nutritionix-api",
   "DB_NAME": "nutritionix-lab"
 }
