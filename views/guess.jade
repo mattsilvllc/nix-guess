@@ -31,12 +31,13 @@ block content
           b  #{product.nf_serving_size_qty} #{product.nf_serving_size_unit}
           | ?
           p
-            form#form-q.form-horizontal(action='alert.html', role='form')
+            form#form-q.form-horizontal(role='form')
               .form-group
                 .col-xs-5.col-sm-3.col-md-3
                   input#ans.form-control.input-lg(type='tel', placeholder='')
+                  input#upc.form-control.input-lg(type='hidden', value=product.upc)
                 button#btn-go.btn.btn-lg.btn-primary(type='submit') Go
             .current-score
               a.view-results-link(href='/results') [ View results ]
               | Correctly Guessed:
-              h4.overall-score 15 of 35
+              h4.overall-score #{answers.correct} of #{answers.all}

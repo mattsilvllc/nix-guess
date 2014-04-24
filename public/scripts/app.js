@@ -14,9 +14,20 @@ $(function () {
   });
 
   $('#form-q').submit(function(event){
-    var ans = $('#ans').val();
-    if(ans != "248") {
-      $(this).attr('action','alert2.html');
-    }
+    event.preventDefault();
+    var data = {
+      answer: $('#ans').val(),
+      item: $('#upc').val()
+    };
+    
+    $.post('/guess', data)
+    .done(function (result) {
+      console.log('result: ', result);
+    })
+    .fail(function (data) {
+      error = data.responseJSON.error;
+      console.log('failed, ', error);
+    });
+
   });
 });
