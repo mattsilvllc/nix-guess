@@ -20,15 +20,15 @@ block content
     .row
       .col-xs-12.col-md-offset-3.col-md-6
         .item-photo.align-center
-          img.img-responsive(src='https://nutritionix-res.cloudinary.com/image/upload/v1389895251/52d81e57d33617976a3a9663.jpg', alt='Mangoes', title='Mangoes')
+          img.img-responsive(src=product.image_url, alt=product.item_name, title=product.item_name)
         h3.item-name
-          | Lucky Charms Cereal
+          | #{product.item_name}
         h5.brand-name
-          | GENERAL MILLS
+          | #{product.brand_name}
         p.question
           span Q:
           | How many calories in
-          b 1 cup
+          b  #{product.nf_serving_size_qty} #{product.nf_serving_size_unit}
           | ?
           p
             form#form-q.form-horizontal(action='alert.html', role='form')
