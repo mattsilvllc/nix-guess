@@ -16,7 +16,3 @@ app.get('/', function (req, res) {
   res.render('index');
 });
 
-app.get('/results', auth_user, function (req, res) {
-  res.render('results');
-});
-

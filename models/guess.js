@@ -34,7 +34,11 @@ module.exports = {
 
       self.save(guess)
       .then(function () {
-        deffered.resolve(correct);
+        var result = {
+          correct: correct,
+          answer: calories
+        };
+        deffered.resolve(result);
       })
       .fail(deffered.reject);
     })

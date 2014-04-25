@@ -22,53 +22,18 @@ block content
         .results-header
           .your-guess Your Guess
           | Correctly Guessed:
-          h3.overall-score 15 of 35
-    .row
-      .wrap-item.odd.clearfix
-        .col-xs-offset-0.col-xs-12.col-md-offset-3.col-md-6
-          .media.media-results
-            a.pull-left(href='#')
-              img.media-object(src='https://nutritionix-res.cloudinary.com/image/upload/v1389893961/52d8194cd33617976a3a8b13.jpg')
-            .guess-score.danger
-              | +35%
-            .media-body
-              h4.media-heading Diced Tomatoes with Green Chilies, medium
-              h6 Poppy Tarty
-              p
-                | 2 Pop Tarts = 240 Calories
-      .wrap-item.clearfix
-        .col-xs-offset-0.col-xs-12.col-md-offset-3.col-md-6
-          .media.media-results
-            a.pull-left(href='#')
-              img.media-object(src='https://nutritionix-res.cloudinary.com/image/upload/v1389894459/52d81b3dd33617976a3a904c.jpg')
-            .guess-score.success
-              | +5%
-            .media-body
-              h4.media-heading Cruncha Ma Me
-              h6 General Mills
-              p
-                | 1 cup = 150 Calories
-      .wrap-item.odd.clearfix
-        .col-xs-offset-0.col-xs-12.col-md-offset-3.col-md-6
-          .media.media-results
-            a.pull-left(href='#')
-              img.media-object(src='https://nutritionix-res.cloudinary.com/image/upload/v1389891979/52d8118e5eba18ad6a1372a0.jpg')
-            .guess-score.danger
-              | +35%
-            .media-body
-              h4.media-heading Pumpkin Butter
-              h6 General Mills
-              p
-                | 2 Pop Tarts = 240 Calories
-      .wrap-item.clearfix
-        .col-xs-offset-0.col-xs-12.col-md-offset-3.col-md-6
-          .media.media-results
-            a.pull-left(href='#')
-              img.media-object(src='https://nutritionix-res.cloudinary.com/image/upload/v1389895251/52d81e57d33617976a3a9663.jpg')
-            .guess-score.success
-              | +10%
-            .media-body
-              h4.media-heading Mangoes
-              h6 Welchs
-              p
-                | 1 cup = 120 Calories
+          h3.overall-score #{stats.correct} of #{stats.all}
+    each result in results
+      .row
+        .wrap-item.clearfix(class=result.is_correct ? '' : 'odd')
+          .col-xs-offset-0.col-xs-12.col-md-offset-3.col-md-6
+            .media.media-results
+              a.pull-left(href='#')
+                img.media-object(src=result.item_image_http)
+              .guess-score(class=result.is_correct ? 'success' : 'danger')
+                | +#{result.percent}%
+              .media-body
+                h4.media-heading=result.item_name
+                h6=result.item_brand
+                p
+                  | #{result.item_serving_qty} #{result.item_serving_unit} = #{result.item_calories} Calories

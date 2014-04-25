@@ -22,7 +22,13 @@ $(function () {
     
     $.post('/guess', data)
     .done(function (result) {
-      console.log('result: ', result);
+      var $alert = result.correct ? $('#alert-correct') : $('#alert-incorrect')
+      $alert.find('.answer').text(result.answer).end().fadeIn();
+
+      setTimeout(function(){
+        $alert.alert('close');
+        window.location.href = '/guess';
+      },4000);
     })
     .fail(function (data) {
       error = data.responseJSON.error;

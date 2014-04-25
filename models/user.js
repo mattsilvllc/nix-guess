@@ -50,5 +50,45 @@ module.exports = {
     });
 
     return deffered.promise;
+  },
+
+  stats: function (user) {
+    var deffered = Q.defer();
+    var sql = 'SELECT COUNT(*) AS response_count, SUM(is_correct) AS response_correct ' +
+        'FROM `nutritionix-lab`.`guess_user_response` WHERE user_id=?';
+
+    DB.query(sql, [user.id], function (error, result) {
+      if(error) return deffered.reject(error);
+      
+      result = {
+        correct: result[0].response_correct,
+        all: result[0].response_count
+      };
+      deffered.resolve(result);
+    });
+
+    return deffered.promise;
+  },
+
+  results: function (user) {
+    var deffered = Q.defer();
+    var sql = 'SELECT * FROM `nutritionix-lab`.`guess_user_response` WHERE user_id=? ' +
+        'ORDER BY id DESC LIMIT 10';
+
+    DB.query(sql, [user.id], function (error, result) {
+      if (error) return deffered.reject(error);
+      
+      result.map(function (guess) {
+        guess.percent = (guess.user_calories*100.0) / guess.item_calories;
+        guess.percent = guess.user_calories > guess.item_calories ? guess.percent/100.0 : guess.percent;
+        
+        guess.percent = Math.round(guess.percent);
+        return guess;
+      });
+      
+      deffered.resolve(result);
+    });
+
+    return deffered.promise;
   }
 };
