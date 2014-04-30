@@ -79,8 +79,8 @@ module.exports = {
       if (error) return deffered.reject(error);
       
       result.map(function (guess) {
-        guess.percent = (guess.user_calories*100.0) / guess.item_calories;
-        guess.percent = guess.user_calories > guess.item_calories ? guess.percent/100.0 : guess.percent;
+        guess.percent = Math.abs(guess.item_calories - guess.user_calories);
+        guess.percent = (guess.percent / guess.item_calories) * 100;
         
         guess.percent = Math.round(guess.percent);
         return guess;
