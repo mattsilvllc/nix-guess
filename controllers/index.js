@@ -12,7 +12,7 @@ fs.readdirSync(__dirname)
 app.get('/', function (req, res) {
   res.locals.user = req.user;
   res.locals.authenticated = !!req.user;
-  
-  res.render('index');
+
+  req.user ? res.redirect('/guess') : res.render('index');
 });
 

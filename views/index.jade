@@ -21,13 +21,9 @@ block content
   .container
     .row
       .col-xs-offset-1.col-xs-10.align-center
-        if authenticated
-          a(href='/guess')
-            button.btn.btn-success Guess Things
-        else
-          p
-            | Train yourself to better understand calories in food portions.
-            | Login with Facebook to get started!
-          .login-button
-            a(href='/auth/facebook')
-              img(src='images/fblogin.png')          
+        p
+          | Train yourself to better understand calories in food portions.
+          | Login with Facebook to get started!
+        .login-button
+          a(href='/auth/facebook')
+            img(src='images/fblogin.png')          
