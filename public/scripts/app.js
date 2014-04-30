@@ -20,10 +20,14 @@ $(function () {
       item: $('#upc').val()
     };
     
+    NProgress.start();
+
     $.post('/guess', data)
     .done(function (result) {
       var $alert = result.correct ? $('#alert-correct') : $('#alert-incorrect')
       $alert.find('.answer').text(result.answer).end().fadeIn();
+
+      NProgress.done();
 
       setTimeout(function(){
         $alert.alert('close');
