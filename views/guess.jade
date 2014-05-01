@@ -1,18 +1,8 @@
 extends layout
 
 block content
-  #alert-correct.alert.alert-popup.alert-success.none(data-dismiss='alert')
-    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-    p Nice guess! 
-      span.answer
-      |  is the answer. +1 point!
-    | Try another...
-  #alert-incorrect.alert.alert-popup.alert-danger.none(data-dismiss='alert')
-    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-    p Sorry, correct answer is  
-      span.answer
-      |  calories.
-    | Try another...
+  .shadow-container
+  .spin
 
   nav.nav-collapse
     ul

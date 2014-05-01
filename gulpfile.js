@@ -11,6 +11,7 @@ gulp.task('scripts', function() {
     './public/scripts/vendors/bootstrap.min.js',
     './public/scripts/vendors/responsive-nav.js',
     './public/scripts/vendors/toastr.min.js',
+    './public/scripts/vendors/spin.min.js',
     './public/scripts/app.js'
   ];
   
