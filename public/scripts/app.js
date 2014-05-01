@@ -61,7 +61,7 @@ $(function () {
       setTimeout(function(){
         toastr.clear();
         window.location.href = '/guess';
-      },4000);
+      },2500);
     })
     .fail(function (data) {
       spinner.stop();
