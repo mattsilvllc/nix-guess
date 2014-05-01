@@ -508,282 +508,8 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires j
   window.responsiveNav = responsiveNav;
 
 }(document, window, 0));
-/*! NProgress (c) 2013, Rico Sta. Cruz
- *  http://ricostacruz.com/nprogress */
-
-;(function(factory) {
-
-  if (typeof module === 'function') {
-    module.exports = factory(this.jQuery || require('jquery'));
-  } else {
-    this.NProgress = factory(this.jQuery);
-  }
-
-})(function($) {
-  var NProgress = {};
-
-  NProgress.version = '0.1.2';
-
-  var Settings = NProgress.settings = {
-    minimum: 0.08,
-    easing: 'ease',
-    positionUsing: '',
-    speed: 200,
-    trickle: true,
-    trickleRate: 0.02,
-    trickleSpeed: 800,
-    showSpinner: true,
-    template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
-  };
-
-  /**
-   * Updates configuration.
-   *
-   *     NProgress.configure({
-   *       minimum: 0.1
-   *     });
-   */
-  NProgress.configure = function(options) {
-    $.extend(Settings, options);
-    return this;
-  };
-
-  /**
-   * Last number.
-   */
-
-  NProgress.status = null;
-
-  /**
-   * Sets the progress bar status, where `n` is a number from `0.0` to `1.0`.
-   *
-   *     NProgress.set(0.4);
-   *     NProgress.set(1.0);
-   */
-
-  NProgress.set = function(n) {
-    var started = NProgress.isStarted();
-
-    n = clamp(n, Settings.minimum, 1);
-    NProgress.status = (n === 1 ? null : n);
-
-    var $progress = NProgress.render(!started),
-        $bar      = $progress.find('[role="bar"]'),
-        speed     = Settings.speed,
-        ease      = Settings.easing;
-
-    $progress[0].offsetWidth; /* Repaint */
-
-    $progress.queue(function(next) {
-      // Set positionUsing if it hasn't already been set
-      if (Settings.positionUsing === '') Settings.positionUsing = NProgress.getPositioningCSS();
-      
-      // Add transition
-      $bar.css(barPositionCSS(n, speed, ease));
-
-      if (n === 1) {
-        // Fade out
-        $progress.css({ transition: 'none', opacity: 1 });
-        $progress[0].offsetWidth; /* Repaint */
-
-        setTimeout(function() {
-          $progress.css({ transition: 'all '+speed+'ms linear', opacity: 0 });
-          setTimeout(function() {
-            NProgress.remove();
-            next();
-          }, speed);
-        }, speed);
-      } else {
-        setTimeout(next, speed);
-      }
-    });
-
-    return this;
-  };
-
-  NProgress.isStarted = function() {
-    return typeof NProgress.status === 'number';
-  };
-
-  /**
-   * Shows the progress bar.
-   * This is the same as setting the status to 0%, except that it doesn't go backwards.
-   *
-   *     NProgress.start();
-   *
-   */
-  NProgress.start = function() {
-    if (!NProgress.status) NProgress.set(0);
-
-    var work = function() {
-      setTimeout(function() {
-        if (!NProgress.status) return;
-        NProgress.trickle();
-        work();
-      }, Settings.trickleSpeed);
-    };
-
-    if (Settings.trickle) work();
-
-    return this;
-  };
-
-  /**
-   * Hides the progress bar.
-   * This is the *sort of* the same as setting the status to 100%, with the
-   * difference being `done()` makes some placebo effect of some realistic motion.
-   *
-   *     NProgress.done();
-   *
-   * If `true` is passed, it will show the progress bar even if its hidden.
-   *
-   *     NProgress.done(true);
-   */
-
-  NProgress.done = function(force) {
-    if (!force && !NProgress.status) return this;
-
-    return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
-  };
-
-  /**
-   * Increments by a random amount.
-   */
-
-  NProgress.inc = function(amount) {
-    var n = NProgress.status;
-
-    if (!n) {
-      return NProgress.start();
-    } else {
-      if (typeof amount !== 'number') {
-        amount = (1 - n) * clamp(Math.random() * n, 0.1, 0.95);
-      }
-
-      n = clamp(n + amount, 0, 0.994);
-      return NProgress.set(n);
-    }
-  };
-
-  NProgress.trickle = function() {
-    return NProgress.inc(Math.random() * Settings.trickleRate);
-  };
-
-  /**
-   * (Internal) renders the progress bar markup based on the `template`
-   * setting.
-   */
-
-  NProgress.render = function(fromStart) {
-    if (NProgress.isRendered()) return $("#nprogress");
-    $('html').addClass('nprogress-busy');
-
-    var $el = $("<div id='nprogress'>")
-      .html(Settings.template);
-
-    var perc = fromStart ? '-100' : toBarPerc(NProgress.status || 0);
-
-    $el.find('[role="bar"]').css({
-      transition: 'all 0 linear',
-      transform: 'translate3d('+perc+'%,0,0)'
-    });
-
-    if (!Settings.showSpinner)
-      $el.find('[role="spinner"]').remove();
-
-    $el.appendTo(document.body);
-
-    return $el;
-  };
-
-  /**
-   * Removes the element. Opposite of render().
-   */
-
-  NProgress.remove = function() {
-    $('html').removeClass('nprogress-busy');
-    $('#nprogress').remove();
-  };
-
-  /**
-   * Checks if the progress bar is rendered.
-   */
-
-  NProgress.isRendered = function() {
-    return ($("#nprogress").length > 0);
-  };
-
-  /**
-   * Determine which positioning CSS rule to use.
-   */
-
-  NProgress.getPositioningCSS = function() {
-    // Sniff on document.body.style
-    var bodyStyle = document.body.style;
-
-    // Sniff prefixes
-    var vendorPrefix = ('WebkitTransform' in bodyStyle) ? 'Webkit' :
-                       ('MozTransform' in bodyStyle) ? 'Moz' :
-                       ('msTransform' in bodyStyle) ? 'ms' :
-                       ('OTransform' in bodyStyle) ? 'O' : '';
-
-    if (vendorPrefix + 'Perspective' in bodyStyle) {
-      // Modern browsers with 3D support, e.g. Webkit, IE10
-      return 'translate3d';
-    } else if (vendorPrefix + 'Transform' in bodyStyle) {
-      // Browsers without 3D support, e.g. IE9
-      return 'translate';
-    } else {
-      // Browsers without translate() support, e.g. IE7-8
-      return 'margin';
-    }
-  };
-
-  /**
-   * Helpers
-   */
-
-  function clamp(n, min, max) {
-    if (n < min) return min;
-    if (n > max) return max;
-    return n;
-  }
-
-  /**
-   * (Internal) converts a percentage (`0..1`) to a bar translateX
-   * percentage (`-100%..0%`).
-   */
-
-  function toBarPerc(n) {
-    return (-1 + n) * 100;
-  }
-
-
-  /**
-   * (Internal) returns the correct CSS for changing the bar's
-   * position given an n percentage, and speed and ease from Settings
-   */
-
-  function barPositionCSS(n, speed, ease) {
-    var barCSS;
-
-    if (Settings.positionUsing === 'translate3d') {
-      barCSS = { transform: 'translate3d('+toBarPerc(n)+'%,0,0)' };
-    } else if (Settings.positionUsing === 'translate') {
-      barCSS = { transform: 'translate('+toBarPerc(n)+'%,0)' };
-    } else {
-      barCSS = { 'margin-left': toBarPerc(n)+'%' };
-    }
-
-    barCSS.transition = 'all '+speed+'ms '+ease;
-
-    return barCSS;
-  }
-
-  return NProgress;
-});
-
-
+﻿(function(n){n(["jquery"],function(n){return function(){function l(n,t,f){return u({type:r.error,iconClass:i().iconClasses.error,message:n,optionsOverride:f,title:t})}function a(n,t,f){return u({type:r.info,iconClass:i().iconClasses.info,message:n,optionsOverride:f,title:t})}function v(n){e=n}function y(n,t,f){return u({type:r.success,iconClass:i().iconClasses.success,message:n,optionsOverride:f,title:t})}function p(n,t,f){return u({type:r.warning,iconClass:i().iconClasses.warning,message:n,optionsOverride:f,title:t})}function w(r){var u=i();if(t||f(u),r&&n(":focus",r).length===0){r[u.hideMethod]({duration:u.hideDuration,easing:u.hideEasing,complete:function(){c(r)}});return}t.children().length&&t[u.hideMethod]({duration:u.hideDuration,easing:u.hideEasing,complete:function(){t.remove()}})}function b(){return{tapToDismiss:!0,toastClass:"toast",containerId:"toast-container",debug:!1,showMethod:"fadeIn",showDuration:300,showEasing:"swing",onShown:undefined,hideMethod:"fadeOut",hideDuration:1e3,hideEasing:"swing",onHidden:undefined,extendedTimeOut:1e3,iconClasses:{error:"toast-error",info:"toast-info",success:"toast-success",warning:"toast-warning"},iconClass:"toast-info",positionClass:"toast-top-right",timeOut:5e3,titleClass:"toast-title",messageClass:"toast-message",target:"body",closeHtml:"<button>&times;<\/button>",newestOnTop:!0}}function h(n){e&&e(n)}function u(r){function l(t){if(!n(":focus",e).length||t)return e[u.hideMethod]({duration:u.hideDuration,easing:u.hideEasing,complete:function(){c(e),u.onHidden&&u.onHidden(),s.state="hidden",s.endTime=new Date,h(s)}})}function b(){(u.timeOut>0||u.extendedTimeOut>0)&&(y=setTimeout(l,u.extendedTimeOut))}function k(){clearTimeout(y),e.stop(!0,!0)[u.showMethod]({duration:u.showDuration,easing:u.showEasing})}var u=i(),v=r.iconClass||u.iconClass;typeof r.optionsOverride!="undefined"&&(u=n.extend(u,r.optionsOverride),v=r.optionsOverride.iconClass||v),o++,t=f(u);var y=null,e=n("<div/>"),p=n("<div/>"),w=n("<div/>"),a=n(u.closeHtml),s={toastId:o,state:"visible",startTime:new Date,options:u,map:r};return r.iconClass&&e.addClass(u.toastClass).addClass(v),r.title&&(p.append(r.title).addClass(u.titleClass),e.append(p)),r.message&&(w.append(r.message).addClass(u.messageClass),e.append(w)),u.closeButton&&(a.addClass("toast-close-button"),e.prepend(a)),e.hide(),u.newestOnTop?t.prepend(e):t.append(e),e[u.showMethod]({duration:u.showDuration,easing:u.showEasing,complete:u.onShown}),u.timeOut>0&&(y=setTimeout(l,u.timeOut)),e.hover(k,b),!u.onclick&&u.tapToDismiss&&e.click(l),u.closeButton&&a&&a.click(function(n){n.stopPropagation(),l(!0)}),u.onclick&&e.click(function(){u.onclick(),l()}),h(s),u.debug&&console&&console.log(s),e}function f(r){return(r||(r=i()),t=n("#"+r.containerId),t.length)?t:(t=n("<div/>").attr("id",r.containerId).addClass(r.positionClass),t.appendTo(n(r.target)),t)}function i(){return n.extend({},b(),s.options)}function c(n){(t||(t=f()),n.is(":visible"))||(n.remove(),n=null,t.children().length===0&&t.remove())}var t,e,o=0,r={error:"error",info:"info",success:"success",warning:"warning"},s={clear:w,error:l,getContainer:f,info:a,options:{},subscribe:v,success:y,version:"2.0.1",warning:p};return s}()})})(typeof define=="function"&&define.amd?define:function(n,t){typeof module!="undefined"&&module.exports?module.exports=t(require(n[0])):window.toastr=t(window.jQuery)});
+//@ sourceMappingURL=toastr.min.js.map
 $(function () {
   var navigation = responsiveNav(".nav-collapse", {
     animate: true,
@@ -799,6 +525,9 @@ $(function () {
     close: function(){}
   });
 
+  toastr.options.closeButton = true;
+  toastr.options.positionClass = 'toast-top-full-width';
+
   $('#form-q').submit(function(event){
     event.preventDefault();
     var data = {
@@ -806,17 +535,17 @@ $(function () {
       item: $('#upc').val()
     };
     
-    NProgress.start();
 
     $.post('/guess', data)
     .done(function (result) {
-      var $alert = result.correct ? $('#alert-correct') : $('#alert-incorrect')
-      $alert.find('.answer').text(result.answer).end().fadeIn();
-
-      NProgress.done();
+      if (result.correct) {
+        toastr.success('Nice guess! ' + result.answer + ' is the answer. +1 point! Try another...');
+      } else {
+        toastr.error('Sorry, correct answer is ' + result.answer + ' calories. Try another...');
+      }
 
       setTimeout(function(){
-        $alert.alert('close');
+        toastr.clear();
         window.location.href = '/guess';
       },4000);
     })

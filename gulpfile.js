@@ -10,10 +10,10 @@ gulp.task('scripts', function() {
     './public/scripts/vendors/jquery.min.js',
     './public/scripts/vendors/bootstrap.min.js',
     './public/scripts/vendors/responsive-nav.js',
-    './public/scripts/vendors/nprogress.js',
+    './public/scripts/vendors/toastr.min.js',
     './public/scripts/app.js'
   ];
-
+  
   gulp.src(files)
     .pipe(concat('bundle.js'))
     .pipe(gulp.dest('./public/dist/'))

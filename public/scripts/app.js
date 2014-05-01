@@ -13,6 +13,9 @@ $(function () {
     close: function(){}
   });
 
+  toastr.options.closeButton = true;
+  toastr.options.positionClass = 'toast-top-full-width';
+
   $('#form-q').submit(function(event){
     event.preventDefault();
     var data = {
@@ -20,17 +23,17 @@ $(function () {
       item: $('#upc').val()
     };
     
-    NProgress.start();
 
     $.post('/guess', data)
     .done(function (result) {
-      var $alert = result.correct ? $('#alert-correct') : $('#alert-incorrect')
-      $alert.find('.answer').text(result.answer).end().fadeIn();
-
-      NProgress.done();
+      if (result.correct) {
+        toastr.success('Nice guess! ' + result.answer + ' is the answer. +1 point! Try another...');
+      } else {
+        toastr.error('Sorry, correct answer is ' + result.answer + ' calories. Try another...');
+      }
 
       setTimeout(function(){
-        $alert.alert('close');
+        toastr.clear();
         window.location.href = '/guess';
       },4000);
     })
