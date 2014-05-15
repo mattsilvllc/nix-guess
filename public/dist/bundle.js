@@ -552,12 +552,12 @@ $(function () {
   $('.answer').click(function(event){
     event.preventDefault();
     $('.answer').attr('disabled','disabled');
-    
+
     var data = {
       answer: parseInt($(this).text(), 10),
       item: $('#upc').val()
     };
-    console.log(data);
+
     var target = $('.spin')[0];
     $('.shadow-container').show();
     var spinner = new Spinner(opts).spin(target);

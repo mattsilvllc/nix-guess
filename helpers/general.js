@@ -10,15 +10,15 @@ exports.random_answers = function (product) {
 
   var i = Math.random();
   answers[1] = i > 0.5 ? correct * (1 + 0.2) : correct * (1 - 0.2);
-  answers[1] = Math.round(answers[1]);
+  answers[1] = Math.round(answers[1]/10) * 10;
   
   i = Math.random();
   answers[2] = i > 0.5 ? correct * (1 + 0.35) : correct * (1 - 0.35);
-  answers[2] = Math.round(answers[2]);
+  answers[2] = Math.round(answers[2]/10) * 10;
   
   i = Math.random();
   answers[3] = i > 0.5 ? correct * (1 + 0.5) : correct * (1 - 0.5);
-  answers[3] = Math.round(answers[3]);
+  answers[3] = Math.round(answers[3]/10) * 10;
 
   product.answers = exports.shuffle(answers);
   return product;
