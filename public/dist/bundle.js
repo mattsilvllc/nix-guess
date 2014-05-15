@@ -549,13 +549,15 @@ $(function () {
   toastr.options.closeButton = true;
   toastr.options.positionClass = 'toast-top-full-width';
 
-  $('#form-q').submit(function(event){
+  $('.answer').click(function(event){
     event.preventDefault();
+    $('.answer').attr('disabled','disabled');
+    
     var data = {
-      answer: $('#ans').val(),
+      answer: parseInt($(this).text(), 10),
       item: $('#upc').val()
     };
-    
+    console.log(data);
     var target = $('.spin')[0];
     $('.shadow-container').show();
     var spinner = new Spinner(opts).spin(target);

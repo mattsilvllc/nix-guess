@@ -36,10 +36,10 @@ block content
           p
             form#form-q.form-horizontal(role='form')
               .form-group
-                .col-xs-5.col-sm-3.col-md-3
-                  input#ans.form-control.input-lg(type='tel', placeholder='')
+                .col-md-12
                   input#upc.form-control.input-lg(type='hidden', value=product.upc)
-                button#btn-go.btn.btn-lg.btn-primary(type='submit') Go
+                  each answer in product.answers
+                    button.answer.btn.btn-lg.btn-info.btn-block.btn-choice=answer
             .current-score
               a.view-results-link(href='/results') [ View results ]
               | Correctly Guessed:

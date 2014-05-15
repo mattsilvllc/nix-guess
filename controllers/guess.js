@@ -8,7 +8,7 @@ Route.get('/', auth_user, function (req, res) {
   Q.all([Guess.random(req.user), User.stats(req.user)])
   .spread(function (product, answers) {
     res.render('guess', {
-      product: product,
+      product: Helpers.general.random_answers(product),
       answers: answers
     });
   })
