@@ -1,5 +1,6 @@
 var passport = require('passport')
-var Fb_strategy = require('passport-facebook').Strategy;
+var fb_strategy = require('passport-facebook').Strategy;
+var local_strategy = require('passport-local').Strategy;
 var User = Models.User;
 
 passport.serializeUser(function(user, done) {
@@ -13,7 +14,7 @@ passport.deserializeUser(function(id, done) {
     .fail(done);
 });
 
-passport.use(new Fb_strategy({
+passport.use(new fb_strategy({
     clientID: config.get('FACEBOOK_APP_ID'),
     clientSecret: config.get('FACEBOOK_APP_SECRET'),
     callbackURL: config.get('APP_URL') + '/auth/facebook/callback'
@@ -28,7 +29,8 @@ passport.use(new Fb_strategy({
       last_name: profile.last_name,
       gender: profile.gender,
       birthday: new Date(profile.birthday),
-      last_login: new Date()
+      last_login: new Date(),
+      is_guest: false
     };
 
     User.find_by_fb_id(user.fb_id)
@@ -44,11 +46,29 @@ passport.use(new Fb_strategy({
   }
 ));
 
+passport.use(new local_strategy(
+  function(username, password, done) {
+    var user = {
+      is_guest: true,
+      last_login: new Date()
+    };
+
+    User.create(user).then(function (new_user) {
+      done(null, new_user);
+    }).fail(done);
+}));
+
+
 app.get('/auth/facebook', passport.authenticate('facebook', {
   scope: ['email', 'user_birthday']
 }));
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: '/guess',
+  failureRedirect: '/?error=true'
+}));
+
+app.get('/auth/guest', passport.authenticate('local', {
   successRedirect: '/guess',
   failureRedirect: '/?error=true'
 }));

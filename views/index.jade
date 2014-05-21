@@ -26,4 +26,6 @@ block content
           | Login with Facebook to get started!
         .login-button
           a(href='/auth/facebook')
-            img(src='images/fblogin.png')          
+            img(src='images/fblogin.png')
+        .guest-login
+          a.btn.btn-info(href='/auth/guest?username=guest&password=guest') Guest Login
